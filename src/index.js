@@ -1,21 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-  
+import { DashboardContainer } from './app/dashboard/dashboard.container';
+
 class LaundryApp extends React.Component {
-    render() {
-        return (
-        <div className="laundry">
-            {"LaundryApp"}
-        </div>
-        );
-    }
+	render() {
+		return (
+			<DashboardContainer />
+		);
+	}
 }
   
-// ========================================
-  
 ReactDOM.render(
-    <LaundryApp />,
-    document.getElementById('root')
+	<LaundryApp />,
+	document.getElementById('root'),
 );
-  
