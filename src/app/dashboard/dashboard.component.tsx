@@ -1,6 +1,5 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-<<<<<<< HEAD
 import Navbar from 'react-bootstrap/Navbar';
 
 import Button from 'react-bootstrap/Button';
@@ -9,13 +8,10 @@ import Image from 'react-bootstrap/Image';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-=======
->>>>>>> Starting Dashboard
 
 export class Dashboard extends React.Component {
   render() {
     return (
-<<<<<<< HEAD
       <Container>
         <Row>
           <Col>
@@ -39,9 +35,3 @@ const DashboardHeaderButtons = () => (
     <Navbar.Brand style={{marginLeft: 20}}>Laundry CS</Navbar.Brand>
   </Navbar>
 );
-=======
-      <div></div>
-    );
-  }
-}
->>>>>>> Starting Dashboard
