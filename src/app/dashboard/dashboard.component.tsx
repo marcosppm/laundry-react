@@ -24,7 +24,11 @@ export class Dashboard extends React.Component {
 }
 
 const DashboardHeaderButtons = () => (
+<<<<<<< HEAD
   <Navbar bg="primary" variant="dark" style={{marginLeft: 20}}>
+=======
+  <Navbar bg="primary" variant="dark">
+>>>>>>> Started title bar
     <Button variant="outline-light">
       <Image
         src='https://facebook.github.io/react-native/img/tiny_logo.png'
