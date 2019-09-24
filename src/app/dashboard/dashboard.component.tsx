@@ -1,5 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Navbar from 'react-bootstrap/Navbar';
+import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
@@ -25,7 +27,7 @@ export class Dashboard extends React.Component {
   }
 }
 
-export const DashboardHeader = () => (
+const DashboardHeader = () => (
   <>
     <Col md={'auto'}>
       <ButtonStyled variant='outline-light'>
@@ -42,8 +44,7 @@ export const DashboardHeader = () => (
   </>
 );
 
-
-export const DashboardTabs = () => (
+const DashboardTabs = () => (
   <>
     <Col>
       <H1>Tabs</H1>
