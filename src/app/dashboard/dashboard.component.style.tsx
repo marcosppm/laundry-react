@@ -1,6 +1,12 @@
 import styled from 'styled-components';
+import { Color } from '../../resources/constants';
+import Row from 'react-bootstrap/Row';
+import Button from 'react-bootstrap/Button';
 
-export const NavbarStyle = styled.nav`
-  width: 100%;
-  background-color: #0000EE;
+export const DashboardHeaderStyled = styled(Row)`
+  background-color: ${Color.Primary};
+`;
+
+export const ButtonStyled = styled(Button)`
+  margin-top: 5px;
 `;
