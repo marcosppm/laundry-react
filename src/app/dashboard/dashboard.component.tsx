@@ -1,47 +1,38 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-<<<<<<< HEAD
-import Navbar from 'react-bootstrap/Navbar';
-
 import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
-
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-=======
->>>>>>> Starting Dashboard
+import { DashboardHeaderStyled, ButtonStyled } from './dashboard.component.style';
+import { ThreeDotsIcon } from '../../resources';
+import { H1 } from '../../components';
 
 export class Dashboard extends React.Component {
   render() {
     return (
-<<<<<<< HEAD
-      <Container>
-        <Row>
-          <Col>
-            <DashboardHeaderButtons />
-          </Col>
-        </Row>
+      <Container fluid={true}>
+        <DashboardHeaderStyled className='align-middle'>
+          <DashboardHeader />
+        </DashboardHeaderStyled>
       </Container>
     );
   }
 }
 
-const DashboardHeaderButtons = () => (
-  <Navbar bg="primary" variant="dark" style={{marginLeft: 20}}>
-    <Button variant="outline-light">
-      <Image
-        src='https://facebook.github.io/react-native/img/tiny_logo.png'
-        width={10}
-        height={30}
-      />
-    </Button>
-    <Navbar.Brand style={{marginLeft: 20}}>Laundry CS</Navbar.Brand>
-  </Navbar>
+export const DashboardHeader = () => (
+  <>
+    <Col md={'auto'}>
+      <ButtonStyled variant='outline-light'>
+        <Image
+          src={ThreeDotsIcon}
+          width={30}
+          height={30}
+        />
+      </ButtonStyled>
+    </Col>
+    <Col md={{ offset: 5 }}>
+      <H1>Laundry CS</H1>
+    </Col>
+  </>
 );
-=======
-      <div></div>
-    );
-  }
-}
->>>>>>> Starting Dashboard
