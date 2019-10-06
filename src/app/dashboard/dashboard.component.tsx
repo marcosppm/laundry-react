@@ -6,6 +6,7 @@ import { Strings } from '../../resources';
 import { H3 } from '../../components';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
+import { Machine, Residence } from '../../model/entities';
 
 const DashboardTabs = () => (
   <Tabs id={"residences-main-tab"}>
@@ -31,7 +32,7 @@ const MachinesList = (props: MachinesListProps) => {
   return (
     <Col>
       {machines.map((machine, index) => {
-        const machineTitle: string = `${Strings.Components.Machine} ${machine.number}`;
+        const machineTitle: string = `${Strings.Components.Machine} ${machine.order}`;
         const key: string = machineTitle + index;
         return <H3 key={key}>{machineTitle}</H3>
       })}
@@ -45,26 +46,16 @@ export const Dashboard = () => (
   </Container>
 );
 
-interface Residence {
-  id: string;
-  machines: Machine[];
-}
-
-interface Machine {
-  number: number;
-  deadline: Date;
-}
-
 const datasourceResidences: Residence[] = [
   {
     id: '1',
     machines: [
       {
-        number: 1,
+        order: 1,
         deadline: new Date(2019, 11, 6),
       },
       {
-        number: 2,
+        order: 2,
         deadline: new Date(2019, 11, 7),
       },
     ],
@@ -73,7 +64,7 @@ const datasourceResidences: Residence[] = [
     id: '4B',
     machines: [
       {
-        number: 1,
+        order: 1,
         deadline: new Date(2019, 11, 8),
       },
     ],
@@ -82,15 +73,15 @@ const datasourceResidences: Residence[] = [
     id: '4DD',
     machines: [
       {
-        number: 1,
+        order: 1,
         deadline: new Date(2019, 11, 9),
       },
       {
-        number: 2,
+        order: 2,
         deadline: new Date(2019, 11, 10),
       },
       {
-        number: 3,
+        order: 3,
         deadline: new Date(2019, 11, 11),
       },
     ],
