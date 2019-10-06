@@ -35,3 +35,9 @@ export const HALF_GUTTER: number = 4;
 export enum ScreenUnit {
   Pixels = 'px',
 }
+
+export const Border = {
+  Radius: 4,
+  Width: 2,
+  Color: DefaultColor.DarkBlue,
+};

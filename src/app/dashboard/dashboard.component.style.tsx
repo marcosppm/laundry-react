@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Color, HALF_GUTTER, ScreenUnit } from '../../resources/constants';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
+import Tabs from 'react-bootstrap/Tabs';
 
 export const DashboardHeaderStyled = styled(Row)`
   background-color: ${Color.Primary};

@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Residence, Machine } from '../../model/entities';
-import Col from 'react-bootstrap/Col';
 import { Strings } from '../../resources/strings';
-import { H1 } from '../../components/headers.style';
+import { MachineCard } from '../../components';
+import { MachinesRowStyled } from './residence-view.style';
+import Col from 'react-bootstrap/Col';
 
 interface ResidenceComponentProps {
   residence: Residence;
@@ -20,12 +21,15 @@ interface MachinesListProps {
 
 const MachinesList = (props: MachinesListProps) => {
   return (
-    <Col>
+    <MachinesRowStyled>
       {props.machines.map((machine, index) => {
-        const machineTitle: string = `${Strings.Components.Machine} ${machine.order}`;
-        const key: string = machineTitle + index;
-        return <H1 key={key}>{machineTitle}</H1>
+        const key: string = Strings.Components.Machine.Machine + index;
+        return (
+          <Col md={'auto'}>
+            <MachineCard key={key} machine={machine} />
+          </Col>
+        );
       })}
-    </Col>
+    </MachinesRowStyled>
   );
 };
