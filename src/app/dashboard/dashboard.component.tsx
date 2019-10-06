@@ -6,7 +6,8 @@ import { Strings } from '../../resources';
 import { H3 } from '../../components';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
-import { Machine, Residence } from '../../model/entities';
+import { Residence, Machine } from '../../model/entities';
+import { ResidenceContainer } from './residence-view.container';
 
 const DashboardTabs = () => (
   <Tabs id={"residences-main-tab"}>
@@ -16,7 +17,7 @@ const DashboardTabs = () => (
       const key: string = eventKey + index;
       return (
         <Tab eventKey={eventKey} title={title} key={key}>
-          <MachinesList residence={residence} />
+          <ResidenceContainer residence={residence} />
         </Tab>
       )
     })}
