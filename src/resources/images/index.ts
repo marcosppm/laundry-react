@@ -1,5 +1,1 @@
-import ThreeDotsIcon from './ic-three-dots.png';
-
-export {
-  ThreeDotsIcon,
-}
+export const ThreeDotsIcon = require('./ic-three-dots.png');

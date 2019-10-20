@@ -13,7 +13,6 @@ export enum DefaultColor {
 export class Color {
   public static readonly Primary = DefaultColor.DodgerBlue;
   public static readonly Secondary = DefaultColor.BlueJeans;
-
 }
 
 export enum FontSize {

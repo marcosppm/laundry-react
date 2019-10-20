@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import { DashboardHeaderStyled, ButtonStyled } from './dashboard.component.style';
 import { ThreeDotsIcon, Strings } from '../../resources';
-import { H1 } from '../../components';
+import { H1, H3 } from '../../components';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 
@@ -21,7 +21,7 @@ const DashboardHeader = () => (
       </ButtonStyled>
     </Col>
     <Col md={{ offset: 5 }}>
-      <H1>Laundry CS</H1>
+      <H1>{Strings.AppName}</H1>
     </Col>
   </>
 );
@@ -52,7 +52,7 @@ const MachinesList = (props: MachinesListProps) => {
       {machines.map((machine, index) => {
         const machineTitle: string = `${Strings.Components.Machine} ${machine.number}`;
         const key: string = machineTitle + index;
-        return <H1 key={key}>{machineTitle}</H1>
+        return <H3 key={key}>{machineTitle}</H3>
       })}
     </Col>
   );

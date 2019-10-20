@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import { DashboardContainer } from './app/dashboard/dashboard.container';
+import './index.tsx';
+import { Dashboard } from './app/dashboard/dashboard.component';
 
 class LaundryApp extends React.Component {
 	render() {
 		return (
-			<DashboardContainer />
+			<Dashboard />
 		);
 	}
 }

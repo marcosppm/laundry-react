@@ -1,4 +1,5 @@
 export let Strings = {
+  AppName: 'Laundry CS',
   Components: {
     Machine: 'Machine',
   },
