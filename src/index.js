@@ -1,15 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.tsx';
-import { Dashboard } from './app/dashboard/dashboard.component';
-
-class LaundryApp extends React.Component {
-	render() {
-		return (
-			<Dashboard />
-		);
-	}
-}
+import { LaundryApp } from './app';
   
 ReactDOM.render(
 	<LaundryApp />,

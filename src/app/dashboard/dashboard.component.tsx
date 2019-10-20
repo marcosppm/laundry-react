@@ -1,30 +1,11 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Image from 'react-bootstrap/Image';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
-import { DashboardHeaderStyled, ButtonStyled } from './dashboard.component.style';
-import { ThreeDotsIcon, Strings } from '../../resources';
-import { H1, H3 } from '../../components';
+import { Strings } from '../../resources';
+import { H3 } from '../../components';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
-
-const DashboardHeader = () => (
-  <>
-    <Col md={'auto'}>
-      <ButtonStyled variant='outline-light'>
-        <Image
-          src={ThreeDotsIcon}
-          width={30}
-          height={30}
-        />
-      </ButtonStyled>
-    </Col>
-    <Col md={{ offset: 5 }}>
-      <H1>{Strings.AppName}</H1>
-    </Col>
-  </>
-);
 
 const DashboardTabs = () => (
   <Tabs id={"residences-main-tab"}>
@@ -60,9 +41,6 @@ const MachinesList = (props: MachinesListProps) => {
 
 export const Dashboard = () => (
   <Container fluid={true}>
-    <DashboardHeaderStyled>
-      <DashboardHeader />
-    </DashboardHeaderStyled>
     <DashboardTabs />
   </Container>
 );

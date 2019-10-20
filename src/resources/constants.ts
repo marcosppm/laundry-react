@@ -23,3 +23,8 @@ export enum FontSize {
   Large = 24,
   XLarge = 42,
 }
+
+export enum Spacing {
+  Gutter = 8,
+  HalfGutter = 4,
+}

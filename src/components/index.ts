@@ -1,1 +1,1 @@
-export * from './headers.style';
+export * from './typography.style';
