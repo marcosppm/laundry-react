@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FontSize, DefaultColor } from "../resources";
+import { FontSize, DefaultColor } from "../../resources";
 
 export const H1 = styled.h1`
   font-size: ${FontSize.Large};
