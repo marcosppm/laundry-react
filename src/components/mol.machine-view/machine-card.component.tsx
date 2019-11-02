@@ -7,6 +7,7 @@ import { CardStyled } from './machine-card.style';
 
 export interface MachineCardProps {
   machine: Machine;
+  onClick: () => void;
 }
 
 const IMG_WIDTH: number = 200;
@@ -21,7 +22,7 @@ export const MachineCard = (props: MachineCardProps) => {
         <Card.Text>
           00:00:00
         </Card.Text>
-        <Button variant="primary">{Strings.Components.Machine.Button.Available}</Button>
+        <Button variant="primary" onClick={props.onClick}>{Strings.Components.Machine.Button.Available}</Button>
       </Card.Body>
     </CardStyled>
   );

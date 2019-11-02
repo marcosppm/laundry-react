@@ -11,7 +11,10 @@ interface ResidenceComponentProps {
 
 export const ResidenceComponent = (props: ResidenceComponentProps) => {
   return (
-    <MachinesList machines={props.residence.machines} />
+    <>
+      <MachinesList machines={props.residence.machines} />
+      {}
+    </>    
   );
 }
 
@@ -26,7 +29,7 @@ const MachinesList = (props: MachinesListProps) => {
         const key: string = Strings.Components.Machine.Machine + index;
         return (
           <Col md={'auto'}>
-            <MachineCard key={key} machine={machine} />
+            <MachineCard key={key} machine={machine} onClick={props.handleSetTime} />
           </Col>
         );
       })}
