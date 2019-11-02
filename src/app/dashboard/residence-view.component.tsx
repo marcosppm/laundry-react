@@ -4,6 +4,7 @@ import { Strings } from '../../resources/strings';
 import { MachineCard } from '../../components';
 import { MachinesRowStyled } from './residence-view.style';
 import Col from 'react-bootstrap/Col';
+import { SetTimeDialog } from '../dialogs/set-time-dialog.component';
 
 interface ResidenceComponentProps {
   residence: Residence;
@@ -11,10 +12,7 @@ interface ResidenceComponentProps {
 
 export const ResidenceComponent = (props: ResidenceComponentProps) => {
   return (
-    <>
-      <MachinesList machines={props.residence.machines} />
-      {}
-    </>    
+    <MachinesList machines={props.residence.machines} />
   );
 }
 
@@ -23,16 +21,39 @@ interface MachinesListProps {
 }
 
 const MachinesList = (props: MachinesListProps) => {
+  const [showDialog, setShowDialog] = React.useState(false);
+  const [machine, setMachine] = React.useState<Machine>();
+
+  const handleOpenDialog = (machine: Machine) => () => {
+    setShowDialog(true);
+    setMachine(machine);
+  };
+
+  const handleSetTime = (minutes: number) =>  {
+    if (machine !== undefined) {
+      alert(minutes); /////////////////////////////////////////
+      machine.deadline = new Date();
+    }
+    setShowDialog(false);
+  };
+
+  const handleCancelClick = () => {
+    setShowDialog(false);
+  };
+
   return (
-    <MachinesRowStyled>
-      {props.machines.map((machine, index) => {
-        const key: string = Strings.Components.Machine.Machine + index;
-        return (
-          <Col md={'auto'}>
-            <MachineCard key={key} machine={machine} onClick={props.handleSetTime} />
-          </Col>
-        );
-      })}
-    </MachinesRowStyled>
+    <>
+      <MachinesRowStyled>
+        {props.machines.map((machine, index) => {
+          const key: string = Strings.Components.Machine.Machine + index;
+          return (
+            <Col md={'auto'}>
+              <MachineCard key={key} machine={machine} onClick={handleOpenDialog(machine)} />
+            </Col>
+          );
+        })}
+      </MachinesRowStyled>
+      <SetTimeDialog show={showDialog} machine={machine} onSetTimeClick={handleSetTime} onCancelClick={handleCancelClick} />
+    </>
   );
 };

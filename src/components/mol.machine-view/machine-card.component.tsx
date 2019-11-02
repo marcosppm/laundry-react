@@ -15,12 +15,12 @@ const IMG_WIDTH: number = 200;
 export const MachineCard = (props: MachineCardProps) => {
   return (
     <CardStyled className={"text-center"}>
-      <Card.Img style={{width: IMG_WIDTH}} variant={'top'} src={WashingMachineImg}  />
+      <Card.Img style={{ width: IMG_WIDTH }} variant={'top'} src={WashingMachineImg} />
       <Card.Body>
         <Card.Title>{machineName(props.machine.order)}</Card.Title>
         <Card.Subtitle>{Strings.Components.Machine.RemainingTime}</Card.Subtitle>
         <Card.Text>
-          00:00:00
+          {props.machine && props.machine.deadline ? props.machine.deadline.toDateString() : '00:00:00'}
         </Card.Text>
         <Button variant="primary" onClick={props.onClick}>{Strings.Components.Machine.Button.Available}</Button>
       </Card.Body>
