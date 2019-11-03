@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { Machine } from '../../model';
+import { Strings } from '../../resources/strings';
 
 export interface SetTimeDialogProps {
   show: boolean;
@@ -28,26 +29,30 @@ export const SetTimeDialog = (props: SetTimeDialogProps) => {
     }
   };
 
+  const getModalTitle = (order: number) => {
+    return `${Strings.Components.SetTimeDialog.Machine} ${order}`;
+  }
+
   return (
     <Modal show={props.show}>
       {props.machine === undefined ?
         <Modal.Header closeButton>
-          <Modal.Title>No machine found</Modal.Title>
+          <Modal.Title>{Strings.Components.SetTimeDialog.NotFound}</Modal.Title>
         </Modal.Header>
-      :
+        :
         <>
           <Modal.Header closeButton>
-            <Modal.Title>Set time for machine {props.machine.order}</Modal.Title>
+            <Modal.Title>{getModalTitle(props.machine.order)}</Modal.Title>
           </Modal.Header>
           <Form>
             <Form.Control type="number" value={minutesText} onChange={handleChange} />
           </Form>
           <Modal.Footer>
             <Button variant="secondary" onClick={props.onCancelClick}>
-              Close
+              {Strings.Components.SetTimeDialog.Cancel}
             </Button>
             <Button variant="primary" onClick={handleSetTimeClick(minutesText)}>
-              Save Changes
+              {Strings.Components.SetTimeDialog.SetTime}
             </Button>
           </Modal.Footer>
         </>

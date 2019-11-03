@@ -8,12 +8,16 @@ export let Strings = {
         Available: 'Set time',
       }
     },
+    SetTimeDialog: {
+      NotFound: 'Machine not found',
+      Machine: 'Set time for machine',
+      Cancel: 'Cancel',
+      SetTime: 'Set time',
+    }
   },
   Pages: {
     Residence: 'Residence',
     ResidenceShort: 'Res',
   },
-  Error: {
-
-  },
+  Error: { },
 };
