@@ -5,6 +5,7 @@ import { MachineCard } from '../../components';
 import { MachinesRowStyled } from './residence-view.style';
 import Col from 'react-bootstrap/Col';
 import { SetTimeDialog } from '../dialogs/set-time-dialog.component';
+import { getDelayedDateByMinutes } from '../../model/calculators/dates.calculator';
 
 interface ResidenceComponentProps {
   residence: Residence;
@@ -31,8 +32,8 @@ const MachinesList = (props: MachinesListProps) => {
 
   const handleSetTime = (minutes: number) =>  {
     if (machine !== undefined) {
-      alert(minutes); /////////////////////////////////////////
-      machine.deadline = new Date();
+      alert(minutes);
+      machine.deadline = getDelayedDateByMinutes(minutes); //TODO: set to database
     }
     setShowDialog(false);
   };

@@ -13,6 +13,7 @@ export let Strings = {
       Machine: 'Set time for machine',
       Cancel: 'Cancel',
       SetTime: 'Set time',
+      TypeError: 'The value typed is not a number.',
     }
   },
   Pages: {

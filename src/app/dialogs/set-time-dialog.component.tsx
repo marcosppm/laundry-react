@@ -33,7 +33,7 @@ export const SetTimeDialog = (props: SetTimeDialogProps) => {
       props.onSetTimeClick(minutes);
       setMinutesText('');
     } catch (err) {
-      alert('The value typed is not a number.');
+      alert(Strings.Components.SetTimeDialog.TypeError);
     }
   };
 
