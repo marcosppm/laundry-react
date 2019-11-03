@@ -6,6 +6,7 @@ import { Machine } from '../../model';
 import { Strings } from '../../resources/strings';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { ErrorMessage } from '../../components';
 
 export interface SetTimeDialogProps {
   show: boolean;
@@ -16,30 +17,37 @@ export interface SetTimeDialogProps {
 
 export const SetTimeDialog = (props: SetTimeDialogProps) => {
   const [minutesText, setMinutesText] = React.useState('');
+  const [error, setError] = React.useState(false);
 
   const handleChange = (event: any) => {
+    setError(false);
     setMinutesText(event.target.value);
   };
 
   const handleCancelClick = () => {
-    setMinutesText('');
+    resetForm();
     props.onCancelClick();
   };
 
-  const handleSetTimeClick = (minutesText: string) => () => {
+  const handleSetTimeClick = () => {
     let minutes: number;
-    try {
+    if (minutesText.length === 0 || isNaN(+minutesText)) {
+      setError(true);
+    } else {
       minutes = parseInt(minutesText);
       props.onSetTimeClick(minutes);
-      setMinutesText('');
-    } catch (err) {
-      alert(Strings.Components.SetTimeDialog.TypeError);
+      resetForm();
     }
   };
 
   const getModalTitle = (order: number) => {
     return `${Strings.Components.SetTimeDialog.Machine} ${order}`;
-  }
+  };
+
+  const resetForm = () => {
+    setError(false);
+    setMinutesText('');
+  };
 
   return (
     <Modal show={props.show} onHide={handleCancelClick}>
@@ -57,6 +65,9 @@ export const SetTimeDialog = (props: SetTimeDialogProps) => {
               <Col md={1} />
               <Col md={{ span: 10 }}>
                 <Form.Control type="number" value={minutesText} onChange={handleChange} />
+                {error && minutesText.length === 0 &&
+                  <ErrorMessage>{Strings.Components.SetTimeDialog.TypeError}</ErrorMessage>
+                }
               </Col>
               <Col md={1} />
             </Row>
@@ -65,7 +76,7 @@ export const SetTimeDialog = (props: SetTimeDialogProps) => {
             <Button variant="secondary" onClick={handleCancelClick}>
               {Strings.Components.SetTimeDialog.Cancel}
             </Button>
-            <Button variant="primary" onClick={handleSetTimeClick(minutesText)}>
+            <Button variant="primary" onClick={handleSetTimeClick}>
               {Strings.Components.SetTimeDialog.SetTime}
             </Button>
           </Modal.Footer>

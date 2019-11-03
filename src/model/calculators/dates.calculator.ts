@@ -6,9 +6,13 @@ export const getDelayedDateByMinutes = (minutes: number): Date => {
   return date;
 };
 
-export const getDelayToFinishTimer = (deadline: Date): Timer => {
+export const getDelayToFinish = (deadline: Date): number => {
   const today = new Date();
-  const differenceInSeconds: number = Math.abs((deadline.getTime() - today.getTime()) / 1000);
+  const differenceInSeconds: number = (deadline.getTime() - today.getTime()) / 1000;
+  return differenceInSeconds;
+}
+
+export const getTimer = (differenceInSeconds: number): Timer => {
   const hours: number = Math.floor(differenceInSeconds / (60 * 60));
   const minutes: number = Math.floor((differenceInSeconds - hours * 60 * 60) / 60);
   const seconds: number = Math.floor(differenceInSeconds - hours * 60 * 60 - minutes * 60);

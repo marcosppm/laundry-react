@@ -10,3 +10,8 @@ export const H3 = styled.h3`
   font-size: ${FontSize.Medium};
   color: ${DefaultColor.Black};
 `;
+
+export const ErrorMessage = styled.h6`
+  font-size: ${FontSize.XXSmall};
+  color: ${DefaultColor.Red};
+`;

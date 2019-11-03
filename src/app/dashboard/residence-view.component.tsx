@@ -32,7 +32,6 @@ const MachinesList = (props: MachinesListProps) => {
 
   const handleSetTime = (minutes: number) =>  {
     if (machine !== undefined) {
-      alert(minutes);
       machine.deadline = getDelayedDateByMinutes(minutes); //TODO: set to database
     }
     setShowDialog(false);

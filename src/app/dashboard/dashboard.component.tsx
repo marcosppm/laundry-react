@@ -53,11 +53,11 @@ const datasourceResidences: Residence[] = [
     machines: [
       {
         order: 1,
-        deadline: new Date(2019, 11, 6),
+        deadline: new Date(),
       },
       {
         order: 2,
-        deadline: new Date(2019, 11, 7),
+        deadline: new Date(),
       },
     ],
   },
@@ -66,7 +66,7 @@ const datasourceResidences: Residence[] = [
     machines: [
       {
         order: 1,
-        deadline: new Date(2019, 11, 8),
+        deadline: new Date(),
       },
     ],
   },
@@ -75,15 +75,15 @@ const datasourceResidences: Residence[] = [
     machines: [
       {
         order: 1,
-        deadline: new Date(2019, 11, 9),
+        deadline: new Date(),
       },
       {
         order: 2,
-        deadline: new Date(2019, 11, 10),
+        deadline: new Date(),
       },
       {
         order: 3,
-        deadline: new Date(2019, 11, 11),
+        deadline: new Date(),
       },
     ],
   },

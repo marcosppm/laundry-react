@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card';
 import { WashingMachineImg, Strings } from '../../resources';
 import Button from 'react-bootstrap/Button';
 import { CardStyled } from './machine-card.style';
-import { getDelayToFinishTimer } from '../../model/calculators/dates.calculator';
+import { getDelayToFinish, getTimer } from '../../model/calculators/dates.calculator';
 
 export interface MachineCardProps {
   machine: Machine;
@@ -19,8 +19,13 @@ export const MachineCard = (props: MachineCardProps) => {
   };
 
   const showTimer = (): string => {
-    const timer: Timer = getDelayToFinishTimer(props.machine.deadline);
-    return timer.toString();
+    const differenceInSeconds: number = getDelayToFinish(props.machine.deadline);
+    if (differenceInSeconds < 0) {
+      return '00:00:00';
+    } else {
+      const timer = getTimer(differenceInSeconds);
+      return timer.toString();
+    }
   };
 
   return (
