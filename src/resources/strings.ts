@@ -6,6 +6,8 @@ export let Strings = {
       RemainingTime: 'Remaining: ',
       Button: {
         Available: 'Set time',
+        Busy: 'Busy',
+        Cancel: 'Cancel',
       }
     },
     SetTimeDialog: {

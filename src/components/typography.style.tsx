@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FontSize, DefaultColor } from "../resources";
+import { FontSize, DefaultColor, Color } from "../resources";
 
 export const H1 = styled.h1`
   font-size: ${FontSize.Large};
@@ -13,5 +13,5 @@ export const H3 = styled.h3`
 
 export const ErrorMessage = styled.h6`
   font-size: ${FontSize.XXSmall};
-  color: ${DefaultColor.Red};
+  color: ${Color.Alert};
 `;
