@@ -1,16 +1,24 @@
 import { Timer } from "../entities";
 
-export const getDelayedDateByMinutes = (minutes: number): Date => {
-  const date = new Date();
+export const getDelayedDateByMinutes = (date: Date, minutes: number): Date => {
   date.setMinutes(date.getMinutes() + minutes);
   return date;
+};
+
+export const getDelayedDateBySeconds = (date: Date, seconds: number): Date => {
+  date.setSeconds(date.getSeconds() + seconds);
+  return date;
+};
+
+export const tick = (date: Date): Date => {
+  return getDelayedDateBySeconds(date, -1);
 };
 
 export const getDelayToFinish = (deadline: Date): number => {
   const today = new Date();
   const differenceInSeconds: number = (deadline.getTime() - today.getTime()) / 1000;
   return differenceInSeconds;
-}
+};
 
 export const getTimer = (differenceInSeconds: number): Timer => {
   const hours: number = Math.floor(differenceInSeconds / (60 * 60));

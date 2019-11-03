@@ -5,7 +5,7 @@ import { MachineCard } from '../../components';
 import { MachinesRowStyled } from './residence-view.style';
 import Col from 'react-bootstrap/Col';
 import { SetTimeDialog } from '../dialogs/set-time-dialog.component';
-import { getDelayedDateByMinutes } from '../../model/calculators/dates.calculator';
+import { getDelayedDateByMinutes, tick } from '../../model/calculators/dates.calculator';
 
 interface ResidenceComponentProps {
   residence: Residence;
@@ -32,13 +32,24 @@ const MachinesList = (props: MachinesListProps) => {
 
   const handleSetTime = (minutes: number) =>  {
     if (machine !== undefined) {
-      machine.deadline = getDelayedDateByMinutes(minutes); //TODO: set to database
+      machine.deadline = getDelayedDateByMinutes(new Date(), minutes); //TODO: set to database
     }
     setShowDialog(false);
+    startTick();
   };
 
   const handleCancelClick = () => {
     setShowDialog(false);
+  };
+
+  const decrementDeadline = (deadline: Date) => {
+    deadline = tick(deadline);
+  };
+
+  const startTick = () => {
+    if (machine !== undefined) {
+      setTimeout(decrementDeadline(machine.deadline), 1000);
+    }
   };
 
   return (

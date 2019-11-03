@@ -18,8 +18,8 @@ export const MachineCard = (props: MachineCardProps) => {
     return `${Strings.Components.Machine.Machine} ${props.machine.order}`;
   };
 
-  const showTimer = (): string => {
-    const differenceInSeconds: number = getDelayToFinish(props.machine.deadline);
+  const showTimer = (deadline: Date): string => {
+    const differenceInSeconds: number = getDelayToFinish(deadline);
     if (differenceInSeconds < 0) {
       return '00:00:00';
     } else {
@@ -35,7 +35,7 @@ export const MachineCard = (props: MachineCardProps) => {
         <Card.Title>{getMachineName()}</Card.Title>
         <Card.Subtitle>{Strings.Components.Machine.RemainingTime}</Card.Subtitle>
         <Card.Text>
-          {props.machine && props.machine.deadline ? showTimer() : '00:00:00'}
+          {props.machine && props.machine.deadline ? showTimer(props.machine.deadline) : '00:00:00'}
         </Card.Text>
         <Button variant="primary" onClick={props.onClick}>{Strings.Components.Machine.Button.Available}</Button>
       </Card.Body>
