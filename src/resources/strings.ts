@@ -22,5 +22,6 @@ export let Strings = {
     Residence: 'Residence',
     ResidenceShort: 'Res',
   },
+  StorageKey: 'STORED_MACHINE',
   Error: { },
 };

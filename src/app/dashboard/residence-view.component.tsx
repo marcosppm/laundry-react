@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Residence, Machine } from '../../model/entities';
+import { Residence, Machine, getValue, StoredMachine, parseValue } from '../../model/entities';
 import { Strings } from '../../resources/strings';
 import { MachineCard } from '../../components';
 import { MachinesRowStyled } from './residence-view.style';
@@ -13,11 +13,12 @@ interface ResidenceComponentProps {
 
 export const ResidenceComponent = (props: ResidenceComponentProps) => {
   return (
-    <MachinesList machines={props.residence.machines} />
+    <MachinesList residenceId={props.residence.id} machines={props.residence.machines} />
   );
 }
 
 interface MachinesListProps {
+  residenceId: string;
   machines: Machine[];
 }
 
@@ -36,8 +37,12 @@ const MachinesList = (props: MachinesListProps) => {
   };
 
   const handleSetTime = (minutes: number) => {
+    let value: string;
     if (machine !== undefined) {
       machine.deadline = getDelayedDateByMinutes(new Date(), minutes); //TODO: set to database
+      storedMachine = { residenceId: props.residenceId, machineOrder: machine.order };
+      value = getValue(storedMachine);
+      localStorage.setItem(Strings.StorageKey, value);
     }
     setShouldShowDialog(false);
     startTick();
@@ -58,6 +63,28 @@ const MachinesList = (props: MachinesListProps) => {
     }
   };
 
+  const isCancelable = (storedMachine: StoredMachine): boolean => {
+    return (
+      storedMachine !== undefined &&
+      storedMachine.residenceId === props.residenceId &&
+      machine !== undefined &&
+      storedMachine.machineOrder === machine.order
+    );
+  }; 
+  
+  const handleCancelProgramClick = () => {
+    localStorage.removeItem(Strings.StorageKey);
+    value = localStorage.getItem(Strings.StorageKey);
+    if (machine !== undefined) {
+      machine.deadline = new Date();
+    }
+  };
+
+  let value: string | null = localStorage.getItem(Strings.StorageKey);
+  let storedMachine: StoredMachine;
+  if (value) {
+    storedMachine = parseValue(value);
+  }
   return (
     <>
       <MachinesRowStyled>
@@ -65,7 +92,12 @@ const MachinesList = (props: MachinesListProps) => {
           const key: string = Strings.Components.Machine.Machine + index;
           return (
             <Col md={'auto'} key={key}>
-              <MachineCard machine={machine} onClick={handleOpenDialog(machine)} />
+              <MachineCard
+                machine={machine}
+                onClick={handleOpenDialog(machine)}
+                cancelable={isCancelable(storedMachine)}
+                onCancel={handleCancelProgramClick}
+              />
             </Col>
           );
         })}
