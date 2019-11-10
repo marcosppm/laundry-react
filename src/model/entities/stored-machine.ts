@@ -9,7 +9,7 @@ export const getValue = (store: StoredMachine): string => {
 
 export const parseValue = (value: string | null): StoredMachine => {
   if (value) {
-    const tokens: string[] = value.split(':');
+    const tokens: string[] = value.split('-');
     return {residenceId: tokens[0], machineOrder: parseInt(tokens[1])};
   } else {
     return {residenceId: '0', machineOrder: 0};

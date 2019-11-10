@@ -31,21 +31,27 @@ const MachinesList = (props: MachinesListProps) => {
     return () => { callback = null; };
   });
 
+  let value: string | null = localStorage.getItem(Strings.StorageKey);
+  let storedMachine: StoredMachine;
+
   const handleOpenDialog = (machine: Machine) => () => {
     setShouldShowDialog(true);
     setMachine(machine);
   };
 
   const handleSetTime = (minutes: number) => {
-    let value: string;
     if (machine !== undefined) {
       machine.deadline = getDelayedDateByMinutes(new Date(), minutes); //TODO: set to database
-      storedMachine = { residenceId: props.residenceId, machineOrder: machine.order };
-      value = getValue(storedMachine);
-      localStorage.setItem(Strings.StorageKey, value);
+      storeLocally(machine);
     }
     setShouldShowDialog(false);
     startTick();
+  };
+
+  const storeLocally = (machine: Machine) => {
+    storedMachine = { residenceId: props.residenceId, machineOrder: machine.order };
+    value = getValue(storedMachine);
+    localStorage.setItem(Strings.StorageKey, value);
   };
 
   const handleCancelClick = () => {
@@ -80,8 +86,6 @@ const MachinesList = (props: MachinesListProps) => {
     }
   };
 
-  let value: string | null = localStorage.getItem(Strings.StorageKey);
-  let storedMachine: StoredMachine;
   if (value) {
     storedMachine = parseValue(value);
   }
