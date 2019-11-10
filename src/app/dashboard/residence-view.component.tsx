@@ -42,7 +42,9 @@ const MachinesList = (props: MachinesListProps) => {
   const handleSetTime = (minutes: number) => {
     if (machine !== undefined) {
       machine.deadline = getDelayedDateByMinutes(new Date(), minutes); //TODO: set to database
-      storeLocally(machine);
+      if (!value) {
+        storeLocally(machine);
+      }
     }
     setShouldShowDialog(false);
     startTick();
@@ -69,7 +71,7 @@ const MachinesList = (props: MachinesListProps) => {
     }
   };
 
-  const isCancelable = (storedMachine: StoredMachine): boolean => {
+  const isCancelable = (storedMachine: StoredMachine, machine: Machine): boolean => {
     return (
       storedMachine !== undefined &&
       storedMachine.residenceId === props.residenceId &&
@@ -99,7 +101,7 @@ const MachinesList = (props: MachinesListProps) => {
               <MachineCard
                 machine={machine}
                 onClick={handleOpenDialog(machine)}
-                cancelable={isCancelable(storedMachine)}
+                cancelable={isCancelable(storedMachine, machine)}
                 onCancel={handleCancelProgramClick}
               />
             </Col>
