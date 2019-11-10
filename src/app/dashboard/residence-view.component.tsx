@@ -48,7 +48,8 @@ const MachinesList = (props: MachinesListProps) => {
 
   const startTick = () => {
     if (machine !== undefined) {
-      setTimeout(decrementDeadline(machine.deadline), 1000);
+      const callback = () => decrementDeadline(machine.deadline);
+      setInterval(callback, 1000);
     }
   };
 
