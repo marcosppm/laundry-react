@@ -5,7 +5,7 @@ import { MachineCard } from '../../components';
 import { MachinesRowStyled } from './residence-view.style';
 import Col from 'react-bootstrap/Col';
 import { SetTimeDialog } from '../dialogs/set-time-dialog.component';
-import { getDelayedDateByMinutes, tick } from '../../model/calculators/dates.calculator';
+import { getDelayedDateByMinutes, tick, getDelayToFinish } from '../../model/calculators/dates.calculator';
 
 interface ResidenceComponentProps {
   residence: Residence;
@@ -63,13 +63,17 @@ const MachinesList = (props: MachinesListProps) => {
     setShouldShowDialog(false);
   };
 
-  const decrementDeadline = (deadline: Date) => {
-    deadline = tick(deadline);
+  const decrementDeadline = (machine: Machine) => {
+    machine.deadline = tick(machine.deadline);
+    if (getDelayToFinish(machine.deadline) <= 0 && getStoredMachineIndex(machine) >= 0) {
+      removeLocally(machine);
+      alert(machine.order);
+    }
   };
 
   const startTick = () => {
     if (currentMachine !== undefined) {
-      callback = () => decrementDeadline(currentMachine.deadline);
+      callback = () => decrementDeadline(currentMachine);
       setInterval(callback, 1000);
     }
   };
@@ -77,23 +81,19 @@ const MachinesList = (props: MachinesListProps) => {
   const isCancelable = (storedMachines: StoredMachine[], machine: Machine): boolean => {
     if (!storedMachines || !machine)
       return false;
-    const storedMachineToRemoveIndex: number = storedMachines.findIndex((storedMachine) => {
-      return (
-        storedMachine.residenceId == props.residenceId &&
-        storedMachine.machineOrder == machine.order
-      );
-    });
+    const storedMachineToRemoveIndex: number = getStoredMachineIndex(machine);
     return storedMachineToRemoveIndex >= 0;
   };
 
   const handleCancelProgramClick = (machineToRemove: Machine) => () => {
-    alert(machineToRemove.order);
-    const storedMachineToRemoveIndex: number = storedMachines.findIndex((machine) => {
-      return (
-        machine.residenceId == props.residenceId &&
-        machine.machineOrder == machineToRemove.order
-      );
-    });
+    removeLocally(machineToRemove);
+    if (machineToRemove !== undefined) {
+      machineToRemove.deadline = new Date();
+    }
+  };
+
+  const removeLocally = (machineToRemove: Machine) => {
+    const storedMachineToRemoveIndex: number = getStoredMachineIndex(machineToRemove);
     if (storedMachineToRemoveIndex >= 0) {
       storedMachines.splice(storedMachineToRemoveIndex, 1);
     }
@@ -103,6 +103,15 @@ const MachinesList = (props: MachinesListProps) => {
     if (machineToRemove !== undefined) {
       machineToRemove.deadline = new Date();
     }
+  };
+
+  const getStoredMachineIndex = (machine: Machine) => {
+    return storedMachines.findIndex((storedMachine) => {
+      return (
+        storedMachine.residenceId == props.residenceId &&
+        storedMachine.machineOrder == machine.order
+      );
+    });
   };
 
   if (jsonString) {
