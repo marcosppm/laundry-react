@@ -32,7 +32,6 @@ const MachinesList = (props: MachinesListProps) => {
   });
 
   let jsonString: string | null = localStorage.getItem(Strings.StorageKey);
-  alert(jsonString);
   let storedMachines: StoredMachine[];
 
   const handleOpenDialog = (machine: Machine) => () => {
@@ -67,7 +66,6 @@ const MachinesList = (props: MachinesListProps) => {
     machine.deadline = tick(machine.deadline);
     if (getDelayToFinish(machine.deadline) <= 0 && getStoredMachineIndex(machine) >= 0) {
       removeLocally(machine);
-      alert(machine.order);
     }
   };
 

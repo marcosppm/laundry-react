@@ -8,7 +8,6 @@ import { Residence } from '../../model/entities';
 import { ResidenceComponent } from './residence-view.component';
 
 const DashboardTabs = () => {
-  localStorage.setItem(Strings.StorageKey, '');
   return (
     <Tabs id={"residences-main-tab"}>
       {datasourceResidences.map((residence, index) => {
