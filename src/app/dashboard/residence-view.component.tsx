@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Residence, Machine, getValue, StoredMachine, parseValue } from '../../model/entities';
+import { Residence, Machine, StoredMachine, parseValue, getJSONString } from '../../model/entities';
 import { Strings } from '../../resources/strings';
 import { MachineCard } from '../../components';
 import { MachinesRowStyled } from './residence-view.style';
@@ -24,36 +24,39 @@ interface MachinesListProps {
 
 const MachinesList = (props: MachinesListProps) => {
   const [shouldShowDialog, setShouldShowDialog] = React.useState(false);
-  const [machine, setMachine] = React.useState<Machine>();
+  const [currentMachine, setCurrentMachine] = React.useState<Machine>();
   let callback;
 
   React.useEffect(() => {
     return () => { callback = null; };
   });
 
-  let value: string | null = localStorage.getItem(Strings.StorageKey);
-  let storedMachine: StoredMachine;
+  let jsonString: string | null = localStorage.getItem(Strings.StorageKey);
+  alert(jsonString);
+  let storedMachines: StoredMachine[];
 
   const handleOpenDialog = (machine: Machine) => () => {
     setShouldShowDialog(true);
-    setMachine(machine);
+    setCurrentMachine(machine);
   };
 
   const handleSetTime = (minutes: number) => {
-    if (machine !== undefined) {
-      machine.deadline = getDelayedDateByMinutes(new Date(), minutes); //TODO: set to database
-      if (!value) {
-        storeLocally(machine);
-      }
+    if (currentMachine !== undefined) {
+      currentMachine.deadline = getDelayedDateByMinutes(new Date(), minutes); //TODO: set to database
+      storeLocally(currentMachine);
     }
     setShouldShowDialog(false);
     startTick();
   };
 
   const storeLocally = (machine: Machine) => {
-    storedMachine = { residenceId: props.residenceId, machineOrder: machine.order };
-    value = getValue(storedMachine);
-    localStorage.setItem(Strings.StorageKey, value);
+    const machineToStore: StoredMachine = { residenceId: props.residenceId, machineOrder: machine.order };
+    if (!storedMachines) {
+      storedMachines = [];
+    }
+    storedMachines.push(machineToStore);
+    jsonString = getJSONString(storedMachines);
+    localStorage.setItem(Strings.StorageKey, jsonString);
   };
 
   const handleCancelClick = () => {
@@ -65,31 +68,45 @@ const MachinesList = (props: MachinesListProps) => {
   };
 
   const startTick = () => {
-    if (machine !== undefined) {
-      callback = () => decrementDeadline(machine.deadline);
+    if (currentMachine !== undefined) {
+      callback = () => decrementDeadline(currentMachine.deadline);
       setInterval(callback, 1000);
     }
   };
 
-  const isCancelable = (storedMachine: StoredMachine, machine: Machine): boolean => {
-    return (
-      storedMachine !== undefined &&
-      storedMachine.residenceId === props.residenceId &&
-      machine !== undefined &&
-      storedMachine.machineOrder === machine.order
-    );
-  }; 
-  
-  const handleCancelProgramClick = () => {
-    localStorage.removeItem(Strings.StorageKey);
-    value = localStorage.getItem(Strings.StorageKey);
-    if (machine !== undefined) {
-      machine.deadline = new Date();
+  const isCancelable = (storedMachines: StoredMachine[], machine: Machine): boolean => {
+    if (!storedMachines || !machine)
+      return false;
+    const storedMachineToRemoveIndex: number = storedMachines.findIndex((storedMachine) => {
+      return (
+        storedMachine.residenceId == props.residenceId &&
+        storedMachine.machineOrder == machine.order
+      );
+    });
+    return storedMachineToRemoveIndex >= 0;
+  };
+
+  const handleCancelProgramClick = (machineToRemove: Machine) => () => {
+    alert(machineToRemove.order);
+    const storedMachineToRemoveIndex: number = storedMachines.findIndex((machine) => {
+      return (
+        machine.residenceId == props.residenceId &&
+        machine.machineOrder == machineToRemove.order
+      );
+    });
+    if (storedMachineToRemoveIndex >= 0) {
+      storedMachines.splice(storedMachineToRemoveIndex, 1);
+    }
+    jsonString = getJSONString(storedMachines);
+    localStorage.setItem(Strings.StorageKey, jsonString);
+
+    if (machineToRemove !== undefined) {
+      machineToRemove.deadline = new Date();
     }
   };
 
-  if (value) {
-    storedMachine = parseValue(value);
+  if (jsonString) {
+    storedMachines = parseValue(jsonString);
   }
   return (
     <>
@@ -101,14 +118,14 @@ const MachinesList = (props: MachinesListProps) => {
               <MachineCard
                 machine={machine}
                 onClick={handleOpenDialog(machine)}
-                cancelable={isCancelable(storedMachine, machine)}
-                onCancel={handleCancelProgramClick}
+                cancelable={isCancelable(storedMachines, machine)}
+                onCancel={handleCancelProgramClick(machine)}
               />
             </Col>
           );
         })}
       </MachinesRowStyled>
-      <SetTimeDialog show={shouldShowDialog} machine={machine} onSetTimeClick={handleSetTime} onCancelClick={handleCancelClick} />
+      <SetTimeDialog show={shouldShowDialog} machine={currentMachine} onSetTimeClick={handleSetTime} onCancelClick={handleCancelClick} />
     </>
   );
 };

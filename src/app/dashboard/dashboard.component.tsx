@@ -4,10 +4,11 @@ import Container from 'react-bootstrap/Container';
 import { Strings } from '../../resources';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
-import { Residence, StoredMachine, parseValue } from '../../model/entities';
+import { Residence } from '../../model/entities';
 import { ResidenceComponent } from './residence-view.component';
 
 const DashboardTabs = () => {
+  //localStorage.setItem(Strings.StorageKey, '');
   return (
     <Tabs id={"residences-main-tab"}>
       {datasourceResidences.map((residence, index) => {

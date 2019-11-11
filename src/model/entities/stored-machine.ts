@@ -3,15 +3,10 @@ export interface StoredMachine {
   machineOrder: number;
 }
 
-export const getValue = (store: StoredMachine): string => {
-  return `${store.residenceId}-${store.machineOrder.toString()}`;
+export const getJSONString = (store: StoredMachine[]): string => {
+  return JSON.stringify(store);
 };
 
-export const parseValue = (value: string | null): StoredMachine => {
-  if (value) {
-    const tokens: string[] = value.split('-');
-    return {residenceId: tokens[0], machineOrder: parseInt(tokens[1])};
-  } else {
-    return {residenceId: '0', machineOrder: 0};
-  }
+export const parseValue = (value: string): StoredMachine[] => {
+  return JSON.parse(value);
 };
