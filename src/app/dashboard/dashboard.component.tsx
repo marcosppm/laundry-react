@@ -16,7 +16,7 @@ interface DashboardTabsProps {
 }
 
 const DashboardTabs: React.FC<DashboardTabsProps> = props => {
-  props.fct(); // the call-site    a = 5
+  props.fct(); // the call-site    a = 5  b = 3
   props.arrow(); //                a = 2
   return (
     <Tabs id={"residences-main-tab"}>
@@ -45,12 +45,16 @@ export class Dashboard extends React.Component {
   }
 
   private fct() { // call-site matters
+    var b = 3;
     console.log(this.a);
+    console.log(b); // remember fct() lexical scope ==> closure
   }
 
   
   private arrow = () => { // enclosing scope matters
+    var c = 4;
     console.log(this.a);
+    console.log(c); // remember arrow() lexical scope ==> closure
   };
 };
 
