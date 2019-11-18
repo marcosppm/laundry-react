@@ -35,11 +35,18 @@ const DashboardTabs: React.FC<DashboardTabsProps> = props => {
 };
 
 export class Dashboard extends React.Component {
-  private a = 2; 
+  private a = 2;
+
+  componentDidMount() {
+    //setInterval(this.arrow, 1000);
+    //setInterval(this.fct.bind(this), 1000);
+  }
+
   render() {
     return (
       <Container fluid={true}>
         <DashboardTabs a={5} fct={this.fct} arrow={this.arrow} />
+        <button onClick={this.fct.bind(this)}>Tap me</button>
       </Container>
     );
   }
