@@ -11,7 +11,7 @@ export const H3 = styled.h3`
   color: ${DefaultColor.Black};
 `;
 
-export const ErrorMessage = styled.h6`
+export const ErrorMessage = styled.body`
   font-size: ${FontSize.XXSmall};
   color: ${Color.Alert};
 `;
