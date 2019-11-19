@@ -22,11 +22,11 @@ interface MachinesListProps {
 }
 
 const MachinesList = (props: MachinesListProps) => {
-  const [showDialog, setShowDialog] = React.useState(false);
+  const [shouldShowDialog, setShouldShowDialog] = React.useState(false);
   const [machine, setMachine] = React.useState<Machine>();
 
   const handleOpenDialog = (machine: Machine) => () => {
-    setShowDialog(true);
+    setShouldShowDialog(true);
     setMachine(machine);
   };
 
@@ -34,12 +34,12 @@ const MachinesList = (props: MachinesListProps) => {
     if (machine !== undefined) {
       machine.deadline = getDelayedDateByMinutes(new Date(), minutes); //TODO: set to database
     }
-    setShowDialog(false);
+    setShouldShowDialog(false);
     startTick();
   };
 
   const handleCancelClick = () => {
-    setShowDialog(false);
+    setShouldShowDialog(false);
   };
 
   const decrementDeadline = (deadline: Date) => {
@@ -65,7 +65,7 @@ const MachinesList = (props: MachinesListProps) => {
           );
         })}
       </MachinesRowStyled>
-      <SetTimeDialog show={showDialog} machine={machine} onSetTimeClick={handleSetTime} onCancelClick={handleCancelClick} />
+      <SetTimeDialog show={shouldShowDialog} machine={machine} onSetTimeClick={handleSetTime} onCancelClick={handleCancelClick} />
     </>
   );
 };
