@@ -24,13 +24,18 @@ interface MachinesListProps {
 const MachinesList = (props: MachinesListProps) => {
   const [shouldShowDialog, setShouldShowDialog] = React.useState(false);
   const [machine, setMachine] = React.useState<Machine>();
+  let callback;
+
+  React.useEffect(() => {
+    return () => { callback = null; };
+  });
 
   const handleOpenDialog = (machine: Machine) => () => {
     setShouldShowDialog(true);
     setMachine(machine);
   };
 
-  const handleSetTime = (minutes: number) =>  {
+  const handleSetTime = (minutes: number) => {
     if (machine !== undefined) {
       machine.deadline = getDelayedDateByMinutes(new Date(), minutes); //TODO: set to database
     }
@@ -48,7 +53,7 @@ const MachinesList = (props: MachinesListProps) => {
 
   const startTick = () => {
     if (machine !== undefined) {
-      const callback = () => decrementDeadline(machine.deadline);
+      callback = () => decrementDeadline(machine.deadline);
       setInterval(callback, 1000);
     }
   };
@@ -59,8 +64,8 @@ const MachinesList = (props: MachinesListProps) => {
         {props.machines.map((machine, index) => {
           const key: string = Strings.Components.Machine.Machine + index;
           return (
-            <Col md={'auto'}>
-              <MachineCard key={key} machine={machine} onClick={handleOpenDialog(machine)} />
+            <Col md={'auto'} key={key}>
+              <MachineCard machine={machine} onClick={handleOpenDialog(machine)} />
             </Col>
           );
         })}
