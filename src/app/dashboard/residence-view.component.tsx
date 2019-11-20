@@ -28,11 +28,6 @@ const MachinesList = (props: MachinesListProps) => {
   const [shouldShowDialog, setShouldShowDialog] = React.useState(false);
   const [currentMachine, setCurrentMachine] = React.useState<Machine>();
   const localStorage = Container.get(LocalStorage);
-  let callback;
-
-  React.useEffect(() => {
-    return () => { callback = null; };
-  });
   
   const handleOpenDialog = (machine: Machine) => () => {
     setShouldShowDialog(true);
@@ -45,25 +40,10 @@ const MachinesList = (props: MachinesListProps) => {
       localStorage.storeLocally(props.residenceId, currentMachine);
     }
     setShouldShowDialog(false);
-    startTick();
   };
 
   const handleCancelClick = () => {
     setShouldShowDialog(false);
-  };
-
-  const decrementDeadline = (machine: Machine) => {
-    machine.deadline = tick(machine.deadline);
-    if (getDelayToFinish(machine.deadline) <= 0 && localStorage.getStoredMachineIndex(props.residenceId, machine) >= 0) {
-      localStorage.removeLocally(props.residenceId, machine);
-    }
-  };
-
-  const startTick = () => {
-    if (currentMachine !== undefined) {
-      callback = () => decrementDeadline(currentMachine);
-      setInterval(callback, 1000);
-    }
   };
 
   const isCancelable = (storedMachines: StoredMachine[], machine: Machine): boolean => {
@@ -89,6 +69,7 @@ const MachinesList = (props: MachinesListProps) => {
             <Col md={'auto'} key={key}>
               <MachineCard
                 machine={machine}
+                residenceId={props.residenceId}
                 onClick={handleOpenDialog(machine)}
                 cancelable={isCancelable(localStorage.storedMachines, machine)}
                 onCancel={handleCancelProgramClick(machine)}

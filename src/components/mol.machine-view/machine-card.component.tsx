@@ -4,10 +4,13 @@ import Card from 'react-bootstrap/Card';
 import { WashingMachineImg, Strings } from '../../resources';
 import Button from 'react-bootstrap/Button';
 import { CardStyled, CardTextStyled, CardSubtitleStyled } from './machine-card.style';
-import { getDelayToFinish, getTimer } from '../../model/calculators/dates.calculator';
+import { getDelayToFinish, getTimer, tick } from '../../model/calculators/dates.calculator';
+import { Container } from 'typedi';
+import { LocalStorage } from '../../app/services';
 
 export interface MachineCardProps {
   machine: Machine;
+  residenceId: string;
   cancelable: boolean;
   onClick: () => void;
   onCancel: () => void;
@@ -17,6 +20,9 @@ const IMG_WIDTH: number = 200;
 const FINISHING_THRESHOLD_IN_SECONDS: number = 15;
 
 export const MachineCard = (props: MachineCardProps) => {
+  const [timer, setTimer] = React.useState(0);
+  const localStorage = Container.get(LocalStorage);
+
   const getMachineName = (): string => {
     return `${Strings.Components.Machine.Machine} ${props.machine.order}`;
   };
@@ -40,11 +46,36 @@ export const MachineCard = (props: MachineCardProps) => {
     return getDelayToFinish(props.machine.deadline) <= 0;
   };
 
+  
+  const startTick = () => {
+    const callback = () => decrementDeadline(props.machine);
+    const timer = setInterval(callback, 1000);
+    setTimer(timer);
+  };
+
+  const decrementDeadline = (machine: Machine) => {
+    machine.deadline = tick(machine.deadline);
+    if (getDelayToFinish(machine.deadline) <= 0 && localStorage.getStoredMachineIndex(props.residenceId, machine) >= 0) {
+      localStorage.removeLocally(props.residenceId, machine);
+    }
+  };
+
+  const handleClick = () => {
+    startTick();
+    props.onClick();
+  };
+
+  const handleCancel = () => {
+    clearInterval(timer);
+    setTimer(0);
+    props.onCancel();
+  };
+
   const SetTimeButton = (): JSX.Element => {
     if (isFinished()) {
-      return <Button variant="primary" onClick={props.onClick}>{Strings.Components.Machine.Button.Available}</Button>;
+      return <Button variant="primary" onClick={handleClick}>{Strings.Components.Machine.Button.Available}</Button>;
     } else if (props.cancelable) {
-      return <Button variant="danger" onClick={props.onCancel}>{Strings.Components.Machine.Button.Cancel}</Button>;
+      return <Button variant="danger" onClick={handleCancel}>{Strings.Components.Machine.Button.Cancel}</Button>;
     } else {
       return <Button variant="danger" disabled={true}>{Strings.Components.Machine.Button.Busy}</Button>;
     }

@@ -17,7 +17,7 @@ export class LocalStorage {
       this.storedMachines = [];
     }
     this.storedMachines.push(machineToStore);
-    const jsonString = this.getJSONString(this.storedMachines);
+    const jsonString: string = this.getJSONString(this.storedMachines);
     localStorage.setItem(STORAGE_KEY, jsonString);
   };
 
@@ -26,7 +26,7 @@ export class LocalStorage {
     if (storedMachineToRemoveIndex >= 0) {
       this.storedMachines.splice(storedMachineToRemoveIndex, 1);
     }
-    const jsonString = this.getJSONString(this.storedMachines);
+    const jsonString: string = this.getJSONString(this.storedMachines);
     localStorage.setItem(STORAGE_KEY, jsonString);
 
     if (machine !== undefined) {
