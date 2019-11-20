@@ -5,8 +5,8 @@ import Button from 'react-bootstrap/Button';
 import { Machine } from '../../model';
 import { Strings } from '../../resources/strings';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import { ErrorMessage } from '../../components';
+import { ColDialogSetTimeStyled } from './set-time-dialog.component.style';
 
 export interface SetTimeDialogProps {
   show: boolean;
@@ -57,19 +57,17 @@ export const SetTimeDialog = (props: SetTimeDialogProps) => {
         </Modal.Header>
         :
         <>
-          <Modal.Header closeButton>
+          <Modal.Header closeButton >
             <Modal.Title>{getModalTitle(props.machine.order)}</Modal.Title>
           </Modal.Header>
           <Form>
             <Row>
-              <Col md={1} />
-              <Col md={{ span: 10 }}>
+              <ColDialogSetTimeStyled>
                 <Form.Control type="number" value={minutesText} onChange={handleChange} />
                 {error && minutesText.length === 0 &&
                   <ErrorMessage>{Strings.Components.SetTimeDialog.TypeError}</ErrorMessage>
                 }
-              </Col>
-              <Col md={1} />
+              </ColDialogSetTimeStyled>
             </Row>
           </Form>
           <Modal.Footer>
