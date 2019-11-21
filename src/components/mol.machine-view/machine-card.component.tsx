@@ -20,7 +20,7 @@ const IMG_WIDTH: number = 200;
 const FINISHING_THRESHOLD_IN_SECONDS: number = 15;
 
 export const MachineCard = (props: MachineCardProps) => {
-  const [timer, setTimer] = React.useState(0);
+  const [timer, setTimer] = React.useState();
   const localStorage = Container.get(LocalStorage);
 
   const getMachineName = (): string => {
