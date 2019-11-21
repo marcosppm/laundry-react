@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { Residence, Machine } from '../../model/entities';
+import { Residence, Machine, StoredMachine } from '../../model/entities';
 import { Strings } from '../../resources/strings';
 import { MachineCard } from '../../components';
 import { MachinesRowStyled } from './residence-view.style';
 import Col from 'react-bootstrap/Col';
 import { SetTimeDialog } from '../dialogs/set-time-dialog.component';
-import { getDelayedDateByMinutes, tick } from '../../model/calculators/dates.calculator';
+import { getDelayedDateByMinutes, tick, getDelayToFinish } from '../../model/calculators/dates.calculator';
+import { Container } from 'typedi';
+import { LocalStorage } from '../services';
 
 interface ResidenceComponentProps {
   residence: Residence;
@@ -13,51 +15,51 @@ interface ResidenceComponentProps {
 
 export const ResidenceComponent = (props: ResidenceComponentProps) => {
   return (
-    <MachinesList machines={props.residence.machines} />
+    <MachinesList residenceId={props.residence.id} machines={props.residence.machines} />
   );
 }
 
 interface MachinesListProps {
+  residenceId: string;
   machines: Machine[];
 }
 
 const MachinesList = (props: MachinesListProps) => {
   const [shouldShowDialog, setShouldShowDialog] = React.useState(false);
-  const [machine, setMachine] = React.useState<Machine>();
-  let callback;
-
-  React.useEffect(() => {
-    return () => { callback = null; };
-  });
-
+  const [currentMachine, setCurrentMachine] = React.useState<Machine>();
+  const localStorage = Container.get(LocalStorage);
+  
   const handleOpenDialog = (machine: Machine) => () => {
     setShouldShowDialog(true);
-    setMachine(machine);
+    setCurrentMachine(machine);
   };
 
   const handleSetTime = (minutes: number) => {
-    if (machine !== undefined) {
-      machine.deadline = getDelayedDateByMinutes(new Date(), minutes); //TODO: set to database
+    if (currentMachine !== undefined) {
+      currentMachine.deadline = getDelayedDateByMinutes(new Date(), minutes); //TODO: set to database
+      localStorage.storeLocally(props.residenceId, currentMachine);
     }
     setShouldShowDialog(false);
-    startTick();
   };
 
   const handleCancelClick = () => {
     setShouldShowDialog(false);
   };
 
-  const decrementDeadline = (deadline: Date) => {
-    deadline = tick(deadline);
+  const isCancelable = (storedMachines: StoredMachine[], machine: Machine): boolean => {
+    if (!storedMachines || !machine)
+      return false;
+    const storedMachineToRemoveIndex: number = localStorage.getStoredMachineIndex(props.residenceId, machine);
+    return storedMachineToRemoveIndex >= 0;
   };
 
-  const startTick = () => {
-    if (machine !== undefined) {
-      callback = () => decrementDeadline(machine.deadline);
-      setInterval(callback, 1000);
+  const handleCancelProgramClick = (machineToRemove: Machine) => () => {
+    localStorage.removeLocally(props.residenceId, machineToRemove);
+    if (machineToRemove !== undefined) {
+      machineToRemove.deadline = new Date();
     }
   };
-
+  
   return (
     <>
       <MachinesRowStyled>
@@ -65,12 +67,18 @@ const MachinesList = (props: MachinesListProps) => {
           const key: string = Strings.Components.Machine.Machine + index;
           return (
             <Col md={'auto'} key={key}>
-              <MachineCard machine={machine} onClick={handleOpenDialog(machine)} />
+              <MachineCard
+                machine={machine}
+                residenceId={props.residenceId}
+                onClick={handleOpenDialog(machine)}
+                cancelable={isCancelable(localStorage.storedMachines, machine)}
+                onCancel={handleCancelProgramClick(machine)}
+              />
             </Col>
           );
         })}
       </MachinesRowStyled>
-      <SetTimeDialog show={shouldShowDialog} machine={machine} onSetTimeClick={handleSetTime} onCancelClick={handleCancelClick} />
+      <SetTimeDialog show={shouldShowDialog} machine={currentMachine} onSetTimeClick={handleSetTime} onCancelClick={handleCancelClick} />
     </>
   );
 };
